@@ -9,6 +9,8 @@ db="all"
 
 ################
 
+start=$(date +"%s")
+
 echo "Cleaning old dumps"
 (ls -t|head -n $maxDumpsCount; ls)|sort|uniq -u|grep .tar.gz|xargs rm
 echo "... done"
@@ -30,4 +32,7 @@ mongodump $opts
 tar -zcvf $dumpName.tar.gz $dumpName
 rm -rf $dumpName
 
-echo "DB dump $dumpName stored and compressed... Done !"
+end=$(date +"%s")
+diff=$(($end-$start))
+
+echo "DB dump $dumpName stored and compressed. Tooked $diff seconds... Done !"
